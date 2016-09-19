@@ -1,0 +1,56 @@
+ul#bookings, ul#bookings-db {list-style: none; padding: 0; margin: 0;}
+.status-save-success {color:#264409;}
+.status-save-error { color:#FF0000;}
+
+div.calendar-inner {margin-bottom: 30px; clear: both;}
+
+.calendarDescription {
+    padding: 5px 0 10px;
+}
+.calendarDescription div {
+    float: left;
+    margin: 0 5px;
+    position: relative;
+}
+.calendarDescriptionFree {
+    background: none repeat scroll 0 0 #d9ffd1;
+}
+.calendarDescriptionReserved, .calendarDescriptionFree {
+    border: 1px solid black;
+    height: 20px;
+    width: 20px;
+}
+.calendarDescriptionReserved, .ui-datepicker-calendar td.ui-state-active a {
+    background: none repeat scroll 0 0 #ffbec3;
+//background-image: linear-gradient(to bottom, rgb(255, 190, 195) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%, rgb(255, 190, 195) 100%);
+}
+
+.datepicker-calendarDescriptionReserved, .datepicker-calendarDescriptionReserved_before, .datepicker-calendarDescriptionReserved_after {
+    opacity: 1 !important;
+}
+
+.ui-state-default {
+    background: #d9ffd1;
+}
+/* http://codepen.io/iiil/pen/KBzvo */
+.datepicker-calendarDescriptionReserved_before .ui-state-default {
+    background-image: linear-gradient(to bottom left, rgb(255, 190, 195) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%, rgb(255, 190, 195) 100%);
+    color: #000000 !important;
+}
+
+.datepicker-calendarDescriptionReserved .ui-state-default {
+    background: #ffbec3 !important;
+    color: #000000 !important;
+}
+
+.datepicker-calendarDescriptionReserved_after .ui-state-default {
+    background-image: linear-gradient(to top right, rgb(255, 190, 195) 50%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 100%, rgb(255, 190, 195) 100%);
+    color: #000000 !important;
+}
+
+#booking_calendar th {background: none;}
+
+.bookings-save, .bookings-delete {
+    margin-left: 5px;
+    margin-top: -14px;
+}

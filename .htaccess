@@ -1,0 +1,15 @@
+RewriteEngine on
+
+Options -Indexes 
+
+RewriteRule ^install\/ ./index.php?r=install/main/index [L,QSA]
+
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+RewriteRule . index.php
+DirectoryIndex index.php
+
+addDefaultCharset utf-8

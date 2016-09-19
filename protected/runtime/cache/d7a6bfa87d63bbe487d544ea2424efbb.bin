@@ -1,0 +1,217 @@
+a:2:{i:0;s:6344:"1473178078|
+			$(document).on("click", "a.compare-label", function() {
+				apId = $(this).attr("id");
+				apId = apId.replace("compare_label", "");
+
+				if ($(this).attr("data-rel-compare") == "false") {
+					if (apId) {
+						var checkboxCompare = $("#compare_check"+apId);
+
+						if (checkboxCompare.is(":checked"))
+							checkboxCompare.prop("checked", false);
+						else {
+							checkboxCompare.prop("checked", true);
+						}
+						addCompare(apId);
+					}
+				}
+			});
+
+			$(document).on("change", ".compare-check", function() {
+				apId = $(this).attr("id");
+				apId = apId.replace("compare_check", "");
+
+				addCompare(apId);
+			});
+
+			function addCompare(apId) {
+				apId = apId || 0;
+
+				if (apId) {
+					var controlCheckedCompare = $("#compare_check"+apId).prop("checked");
+
+					if (!controlCheckedCompare) {
+						deleteCompare(apId);
+					}
+					else {
+						$.ajax({
+							type: "POST",
+							url: "/comparisonList/main/add",
+							data: {apId: apId},
+							beforeSend: function(){
+
+							},
+							success: function(html){
+								if (html == "ok") {
+									$("#compare_label"+apId).html("В списке сравнения");
+									$("#compare_label"+apId).prop("href", "/comparisonList");
+									$("#compare_label"+apId).attr("data-rel-compare", "true");
+								}
+								else {
+									$("#compare_check"+apId).prop("checked", false);
+
+									if (html == "max_limit") {
+										$("#compare_label"+apId).html("Максимум: 6 объявлений");
+									}
+									else {
+										$("#compare_label"+apId).html("Ошибка");
+									}
+								}
+							}
+						});
+					}
+				}
+			}
+
+			function deleteCompare(apId) {
+				$.ajax({
+					type: "POST",
+					url: "/comparisonList/main/del",
+					data: {apId: apId},
+					success: function(html){
+						if (html == "ok") {
+							$("#compare_label"+apId).html("Добавить в список сравнения");
+							$("#compare_label"+apId).prop("href", "javascript:void(0);");
+							$("#compare_label"+apId).attr("data-rel-compare", "false");
+						}
+						else {
+							$("#compare_check"+apId).prop("checked", true);
+							$("#compare_label"+apId).html("Ошибка");
+						}
+					}
+				});
+			}
+		$(function(){
+    $("ul.dropdown li").hover(function(){
+        $(this).addClass("hover");
+        $('ul:first',this).css('visibility', 'visible');
+    
+    }, function(){
+        $(this).removeClass("hover");
+        $('ul:first',this).css('visibility', 'hidden');
+    
+    });
+    $("ul.dropdown li ul li:has(ul)").find("a:first").append(" &raquo; ");
+
+
+	
+	$("ul.dropDownNav li").hover(function(){
+        $(this).addClass("hover");
+        $('ul:first',this).css('visibility', 'visible');
+    
+    }, function(){
+        $(this).removeClass("hover");
+        $('ul:first',this).css('visibility', 'hidden');
+    
+    });
+
+	$("ul.dropDownNav li ul li:has(ul)").find("a:first").append(" &raquo; ");
+	//$("ul.dropDownNav li:has(ul)").find("a:first").prepend(" &#9660;");
+});jQuery(function($) {
+    $(document).ajaxSend(function(){
+        $("#loading").show();
+        $("#overlay-content").show();
+        $("#loading-blocks").show();
+    }).ajaxComplete(function(){
+        $("#loading").hide();
+        $("#overlay-content").hide();
+        $("#loading-blocks").hide();
+    });
+
+    /*$("a.fancy").magnificPopup({
+        type: 'image',
+        closeOnContentClick: true,
+        mainClass: 'mfp-img-mobile'
+    });*/
+    
+    $(".form-disable-button-after-submit").submit(function () {
+        $(".submit-button").attr("disabled", true);
+        //$(".submit-button").before("<img src='" + INDICATOR + "' alt='Loading' border='0' style='text-decoration: none; vertical-align: middle; margin-right: 5px; height: 24px; width: 24px;' />");
+        return true;
+    });
+});
+
+function focusSubmit(elem) {
+    elem.keypress(function(e) {
+        if(e.which == 13) {
+            $(this).blur();
+            $("#btnleft").focus().click();
+        }
+    });
+}
+
+function ajaxSetStatus(elem, id){
+	$.ajax({
+		url: $(elem).attr('href'),
+		success: function(res){
+			$('#'+id).yiiGridView.update(id);
+
+            if (res == 'reload') {
+                location.reload();
+            }
+		}
+	});
+}
+
+function ajaxMoveRequest(url, tableId){
+	$.ajax({
+		url: url,
+		data: {ajax:1},
+		method: "get",
+		success: function(){
+			$("#"+tableId).yiiGridView.update(tableId);
+		}
+	});
+}
+
+(function ($) {
+    $.fn.extend({
+        //pass the options variable to the function
+        confirmModal: function (options) {
+            var html = '<div class="modal" id="confirmContainer"><div class="modal-header"><a class="close" data-dismiss="modal">×</a>' +
+            '<h3>#Heading#</h3></div><div class="modal-body">' +
+            '#Body#</div><div class="modal-footer">' +
+            '<a href="javascript: void(0);" class="btn btn-primary" id="confirmYesBtn">#Confirm#</a>' +
+            '<a href="javascript: void(0);" class="btn" data-dismiss="modal">#Close#</a></div></div>';
+
+            var defaults = {
+                heading: 'Please confirm',
+                body:'Body contents',
+				confirmButton: 'Да',
+				closeButton: 'Нет',
+                callback : null
+            };
+
+            var options = $.extend(defaults, options);
+            html = html.replace('#Heading#',options.heading).replace('#Body#',options.body).replace('#Confirm#',options.confirmButton).replace('#Close#',options.closeButton);
+            $(this).html(html);
+            $(this).modal('show');
+            var context = $(this);
+            $('#confirmYesBtn',this).click(function(){
+                if(options.callback!=null)
+                    options.callback();
+                $(context).modal('hide');
+            });
+        }
+    });
+
+})(jQuery);
+
+var scriptLoaded = [];
+
+function loadScript(url, reload) {
+    reload = reload || true;
+
+    if(typeof scriptLoaded[url] == 'undefined' || reload){
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        document.body.appendChild(script);
+
+        scriptLoaded[url] = 1;
+    }
+}
+		var BASE_URL = '';
+		var INDICATOR = "/themes/classic/images/pages/indicator.gif";
+		var LOADING_NAME = "Загрузка ...";
+	";i:1;N;}
